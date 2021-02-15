@@ -42,7 +42,7 @@ def webServer(port=13331):
            #define header using dict and then convert to a string
            response_ok_hdr = {
                           'HTTP/1.1': '200 OK',
-                          'Content-Type:': 'text/html; charset=URF-8',
+                          'Content-Type:': 'text/html; charset=UTF-8',
                           'Content-Length:': str(len(outputdata)),
                           'Connection:': 'close',}
            response = convert(response_ok_hdr)
@@ -60,7 +60,7 @@ def webServer(port=13331):
            #Send response message for file not found (404)
            error404 = {
                'HTTP/1.1': '404 Not Found',
-               'Content-Type:': 'text/html',
+               'Content-Type:': 'text/html; charset=iso-8859-1',
                'Content-Length:': '0',
                'Connection:': 'close',}
            response = convert(error404)
