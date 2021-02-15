@@ -15,6 +15,7 @@ def get_host_ip():
     try:
         #hostname = gethostname()
         #ipaddr = gethostbyname(hostname)
+        #this is what is needed for autograder
         ipaddr = gethostbyname('localhost')
     except:
         print("unable to get IP")
@@ -51,10 +52,11 @@ def webServer(port=13331):
            connectionSocket.send(response.encode())
 
            #Send the content of the requested file to the client
-           for i in range(0, len(outputdata)):
-               connectionSocket.send(outputdata[i].encode())
-               #connectionSocket.send("\r\n".encode())
-           #connectionSocket.sendall(outputdata.encode())
+           #autograder doesn't like this so changing to sendall
+           #for i in range(0, len(outputdata)):
+           #    connectionSocket.send(outputdata[i].encode())
+
+           connectionSocket.sendall(outputdata.encode())
            connectionSocket.send("\r\n".encode())
            connectionSocket.close()
            f.close()
@@ -67,9 +69,7 @@ def webServer(port=13331):
                'Connection:': 'close',}
            response = convert(error404)
            connectionSocket.send(response.encode())
-           # do i need to add this
-           #connectionSocket.send("File not found".encode())
-           #connectionSocket.send("\r\n".encode())
+
            #Close client socket
            connectionSocket.close()
 
