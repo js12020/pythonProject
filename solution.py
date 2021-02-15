@@ -16,7 +16,7 @@ def webServer(port=13331):
    serverSocket = socket(AF_INET, SOCK_STREAM)
    serverSocket.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
 
-   serverSocket.bind(('127.0.0.1', port))
+   serverSocket.bind((gethostname(), port))
    serverSocket.listen(5)
 
    while True:
