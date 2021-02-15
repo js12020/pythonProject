@@ -21,7 +21,7 @@ def get_host_ip():
 
 def webServer(port=13331):
    serverSocket = socket(AF_INET, SOCK_STREAM)
-   serverSocket.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
+   #serverSocket.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
    ipaddr = get_host_ip()
    serverSocket.bind((ipaddr, port))
    serverSocket.listen(5)
