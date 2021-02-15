@@ -2,29 +2,46 @@
 from socket import *
 import sys # In order to terminate the program
 
+def convert(resp) -> object:
+    resp_str = ""
+
+    for (k, v) in resp.items():
+        resp_str = resp_str + k + ' ' + v + '\n'
+
+    resp_str = resp_str + '\n'
+    return resp_str
+
+
 def webServer(port=13331):
    serverSocket = socket(AF_INET, SOCK_STREAM)
+   serverSocket.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
 
-   #Prepare a server socket
-   #Fill in start
-   bind
-
-   #Fill in end
+   serverSocket.bind(('127.0.0.1', port))
+   serverSocket.listen(5)
 
    while True:
        #Establish the connection
        print('Ready to serve...')
-       connectionSocket, addr = #Fill in start      #Fill in end
+       connectionSocket, addr = serverSocket.accept()
        try:
-           message = #Fill in start    #Fill in end
+           message = connectionSocket.recv(4096)
            filename = message.split()[1]
+           print(filename[1:])
            f = open(filename[1:])
-           outputdata = #Fill in start     #Fill in end
+           outputdata = f.read()
+           print(outputdata)
+           f.close()
 
            #Send one HTTP header line into socket
-           #Fill in start
+           #define header using dict and then convert to a string
+           response_ok_hdr = {
+                          'HTTP/1.1': '200 OK',
+                          'Content-Type': 'text/html',
+                          'Content-Length': str(len(outputdata)),}
+                          #'Connection': 'close',}
+           response = convert(response_ok_hdr)
 
-           #Fill in end
+           connectionSocket.send(response.encode())
 
            #Send the content of the requested file to the client
            for i in range(0, len(outputdata)):
@@ -34,14 +51,16 @@ def webServer(port=13331):
            connectionSocket.close()
        except IOError:
            #Send response message for file not found (404)
-           #Fill in start
-
-           #Fill in end
+           error404 = {
+               'HTTP/1.1': '404 Not Found',
+               'Content-Type': 'text/html',
+               'Content-Length': '0',
+               'Connection': 'close',}
+           response = convert(error404)
+           connectionSocket.send(response.encode())
 
            #Close client socket
-           #Fill in start
-
-           #Fill in end
+           connectionSocket.close()
 
    serverSocket.close()
    sys.exit()  # Terminate the program after sending the corresponding data
