@@ -13,8 +13,8 @@ def convert(resp) -> object:
 
 def get_host_ip():
     try:
-        hostname = gethostname()
-        ipaddr = gethostbyname(hostname)
+        #hostname = gethostname()
+        ipaddr = gethostbyname('localhost')
     except:
         print("unable to get IP")
     return ipaddr
