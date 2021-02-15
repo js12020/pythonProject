@@ -14,6 +14,7 @@ def convert(resp) -> object:
 def get_host_ip():
     try:
         #hostname = gethostname()
+        #ipaddr = gethostbyname(hostname)
         ipaddr = gethostbyname('localhost')
     except:
         print("unable to get IP")
@@ -21,7 +22,7 @@ def get_host_ip():
 
 def webServer(port=13331):
    serverSocket = socket(AF_INET, SOCK_STREAM)
-   #serverSocket.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
+   serverSocket.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
    ipaddr = get_host_ip()
    serverSocket.bind((ipaddr, port))
    serverSocket.listen(5)
@@ -50,9 +51,10 @@ def webServer(port=13331):
            connectionSocket.send(response.encode())
 
            #Send the content of the requested file to the client
-           #for i in range(0, len(outputdata)):
-           #    connectionSocket.senda(outputdata[i].encode())
-           connectionSocket.sendall(outputdata.encode())
+           for i in range(0, len(outputdata)):
+               connectionSocket.send(outputdata[i].encode())
+               #connectionSocket.send("\r\n".encode())
+           #connectionSocket.sendall(outputdata.encode())
            connectionSocket.send("\r\n".encode())
            connectionSocket.close()
            f.close()
