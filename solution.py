@@ -65,7 +65,9 @@ def webServer(port=13331):
                'Connection:': 'close',}
            response = convert(error404)
            connectionSocket.send(response.encode())
-
+           # do i need to add this
+           #connectionSocket.send("File not found".encode())
+           #connectionSocket.send("\r\n".encode())
            #Close client socket
            connectionSocket.close()
 
