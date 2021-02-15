@@ -32,20 +32,19 @@ def webServer(port=13331):
        connectionSocket, addr = serverSocket.accept()
        try:
            message = connectionSocket.recv(4096)
+           if not message:
+               break;
            filename = message.split()[1]
-           print(filename[1:])
            f = open(filename[1:])
            outputdata = f.read()
-           print(outputdata)
-           f.close()
 
            #Send one HTTP header line into socket
            #define header using dict and then convert to a string
            response_ok_hdr = {
                           'HTTP/1.1': '200 OK',
                           'Content-Type': 'text/html',
-                          'Content-Length': str(len(outputdata)),}
-                          #'Connection': 'close',}
+                          'Content-Length': str(len(outputdata)),
+                          'Connection': 'close',}
            response = convert(response_ok_hdr)
 
            connectionSocket.send(response.encode())
@@ -56,6 +55,7 @@ def webServer(port=13331):
 
            connectionSocket.send("\r\n".encode())
            connectionSocket.close()
+           f.close()
        except IOError:
            #Send response message for file not found (404)
            error404 = {
