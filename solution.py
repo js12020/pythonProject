@@ -6,9 +6,9 @@ def convert(resp) -> object:
     resp_str = ""
 
     for (k, v) in resp.items():
-        resp_str = resp_str + k + ' ' + v + '\n'
+        resp_str = resp_str + k + ' ' + v + '\r\n'
 
-    resp_str = resp_str + '\n'
+    resp_str = resp_str + '\r\n'
     return resp_str
 
 def get_host_ip():
@@ -28,7 +28,7 @@ def webServer(port=13331):
 
    while True:
        #Establish the connection
-       print('Ready to serve...')
+       #print('Ready to serve...')
        connectionSocket, addr = serverSocket.accept()
        try:
            message = connectionSocket.recv(4096)
@@ -42,9 +42,9 @@ def webServer(port=13331):
            #define header using dict and then convert to a string
            response_ok_hdr = {
                           'HTTP/1.1': '200 OK',
-                          'Content-Type': 'text/html',
-                          'Content-Length': str(len(outputdata)),
-                          'Connection': 'close',}
+                          'Content-Type:': 'text/html; charset=URF-8',
+                          'Content-Length:': str(len(outputdata)),
+                          'Connection:': 'close',}
            response = convert(response_ok_hdr)
 
            connectionSocket.send(response.encode())
@@ -60,9 +60,9 @@ def webServer(port=13331):
            #Send response message for file not found (404)
            error404 = {
                'HTTP/1.1': '404 Not Found',
-               'Content-Type': 'text/html',
-               'Content-Length': '0',
-               'Connection': 'close',}
+               'Content-Type:': 'text/html',
+               'Content-Length:': '0',
+               'Connection:': 'close',}
            response = convert(error404)
            connectionSocket.send(response.encode())
 
