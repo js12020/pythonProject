@@ -11,12 +11,19 @@ def convert(resp) -> object:
     resp_str = resp_str + '\n'
     return resp_str
 
+def get_host_ip():
+    try:
+        hostname = gethostname()
+        ipaddr = gethostbyname(hostname)
+    except:
+        print("unable to get IP")
+    return ipaddr
 
 def webServer(port=13331):
    serverSocket = socket(AF_INET, SOCK_STREAM)
    serverSocket.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
-
-   serverSocket.bind((gethostname(), port))
+   ipaddr = get_host_ip()
+   serverSocket.bind((ipaddr, port))
    serverSocket.listen(5)
 
    while True:
